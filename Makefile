@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/09 09:56:01 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/09 10:31:28 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,17 +41,23 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) $(LIBFT)
+	@$(ECHO) "$(B_CYA)"
 	$(AR) $@ $(OBJ)
+	@$(ECHO) "$(FANCY_RESET)"
 	$(MAKE) clean
 
 test: $(OBJ)
 	$(ECHO) $(OBJ)
 
 %.o:%.c
+	@$(ECHO) "$(B_GRE)"
 	$(CC) $(ALL_FLAGS) -c $< -o $@
+	@$(ECHO) "$(FANCY_RESET)"
 
 $(LIBFT):
+	@$(ECHO) "$(B_MAG)"
 	$(MAKE) -C $(LIBFT_PATH) all
+	@$(ECHO) "$(FANCY_RESET)"
 
 clean:
 	@$(ECHO) "$(B_RED)"
@@ -59,9 +65,13 @@ clean:
 	@$(ECHO) "$(FANCY_RESET)"
 
 libclean: clean
+	@$(ECHO) "$(B_RED)"
 	$(RM) $(LIBFT)/$(LIBFTA)
+	@$(ECHO) "$(FANCY_RESET)"
 
 fclean: libclean
+	@$(ECHO) "$(B_RED)"
 	$(RM) $(NAME)
+	@$(ECHO) "$(FANCY_RESET)"
 
 re: fclean all
