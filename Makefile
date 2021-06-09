@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/09 10:31:28 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/09 10:36:08 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,16 +35,15 @@ SRC=$(addprefix ft_, $(addsuffix .c, \
 	))
 OBJ=$(SRC:.c=.o)
 
-.PHONY: clean fclean re all $(LIBFT)
+.PHONY: clean fclean re all $(LIBFT) test
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(MAKE) $(LIBFT)
+$(NAME): $(LIBFT) $(OBJ)
 	@$(ECHO) "$(B_CYA)"
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
-	$(MAKE) clean
+	@$(MAKE) clean
 
 test: $(OBJ)
 	$(ECHO) $(OBJ)
