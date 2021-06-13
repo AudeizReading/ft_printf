@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/09 10:36:08 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/13 11:25:34 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ LIBFT=libft
 LIBFTA=libft.a
 LIBFT_PATH=./libft/
 CFLAGS=-Wall -Wextra -Werror
-CHEADERS=-I.
+CHEADERS=-I .
 LDFLAGS=-L ./libft/ -lftprintf
 ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
@@ -39,7 +39,10 @@ OBJ=$(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(SRC)
+	@$(MAKE) $(LIBFT)
+	@$(ECHO) "$(B_GRE)"
+	$(CC) $(CHEADERS) $(CFLAGS) -c $^
 	@$(ECHO) "$(B_CYA)"
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
@@ -47,11 +50,6 @@ $(NAME): $(LIBFT) $(OBJ)
 
 test: $(OBJ)
 	$(ECHO) $(OBJ)
-
-%.o:%.c
-	@$(ECHO) "$(B_GRE)"
-	$(CC) $(ALL_FLAGS) -c $< -o $@
-	@$(ECHO) "$(FANCY_RESET)"
 
 $(LIBFT):
 	@$(ECHO) "$(B_MAG)"

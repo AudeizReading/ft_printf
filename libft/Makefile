@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/23 08:35:31 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/09 10:36:59 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/13 11:20:31 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ all: bonus
 
 $(NAME): $(SRC)
 	@$(ECHO) "$(B_GREEN)"
-	$(CC) $(HEADERS) $(CFLAGS) -c $^
+	$(CC) $(CHEADERS) $(CFLAGS) -c $^
 	@$(ECHO) "$(B_CYAN)"
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
@@ -91,7 +91,7 @@ $(NAME): $(SRC)
 
 bonus: $(NAME)
 	@$(ECHO) "$(B_GREEN)"
-	$(CC) $(HEADERS) $(CFLAGS) -c $(BONUS_SRC)
+	$(CC) $(CHEADERS) $(CFLAGS) -c $(BONUS_SRC)
 	@$(ECHO) "$(B_CYAN)"
 	$(AR) $^ $(BONUS_OBJ)
 	@$(ECHO) "$(FANCY_RESET)"

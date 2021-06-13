@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   libftprintf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/08 18:37:21 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/09 08:17:21 by alellouc         ###   ########.fr       */
+/*   Created: 2021/06/13 12:44:16 by alellouc          #+#    #+#             */
+/*   Updated: 2021/06/13 12:45:18 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef LIBFTPRINTF_H
+# define LIBFTPRINTF_H
 # include "./libft/libft.h"
 
 int	ft_printf(const char *fmt, ...);
