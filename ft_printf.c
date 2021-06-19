@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/18 23:14:23 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/19 18:25:00 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	ft_printf(const char *format, ...)
 			/*else if (*format == '0' || *format == '-')*/
 			{
 				/* if (*format == '0' || *format == '-')*/
+				/* Test vogspehere a distance apres anno*/
 				/* Nous avons donc un attribut à traiter, gestion alignement et
 				** remplissage*/
 				/* Si 0 remplissage à gauche avec des 0 si d i o u x X, sinon
