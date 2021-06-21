@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/21 13:55:16 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/21 14:22:15 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ int	ft_printf(const char *format, ...)
 				ft_putnbr_fd(flag->width, 1);
 			/*	ft_putstr_fd((char *)v_arg, 1);*/
 				ft_putstr_fd("Il y a une largeur de champ à gérer\n", 1);
+				format += ft_intlen(flag->width);
 			}
-			else if (*format == '.' && (ft_isdigit(*(++format)))) 
+			/*else if (*format == '.' && (ft_isdigit(*(++format)))) */
+			/*else*/ if (*format == '.' && (ft_isdigit(*(++format)))) 
 				/* Attention cette condition ne considere pas une precision de . qui est valide mais indique une precision 0 */
 			{
 				/* Nous avons une précision à gérer, une précision est tjs
@@ -117,10 +119,11 @@ int	ft_printf(const char *format, ...)
 				** champ affiche alors "précision" max char */
 				flag->has_precision = 1;
 				flag->precision = ft_atoi(format);
-				/*ft_putnbr_fd(flag->precision, 1);
+				ft_putnbr_fd(flag->precision, 1);
 				ft_putstr_fd("Il y a une précision à gérer\n", 1);
-				ft_putstr_fd((char *)v_arg, 1);*/
+				/*ft_putstr_fd((char *)v_arg, 1);*/
 				/*format += ft_intlen(ft_atoi(format));*/
+				format += ft_intlen(flag->precision);
 			}
 			else if (ft_is_indicator(*format))
 			{
