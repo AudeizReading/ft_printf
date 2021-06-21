@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/21 11:12:03 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/21 13:55:16 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%' && *(++format))
 		{
 			v_arg = va_arg(args, void *);
-			if (*format == '%') /* A placer avec les indicateurs de conversion */
-				ft_putchar_fd('%', 1);
-			else if (ft_is_attribute(*format))
+		/*	if (*format == '%')*/ /* A placer avec les indicateurs de conversion */
+			/*	ft_putchar_fd('%', 1);
+			else*/ if (ft_is_attribute(*format))
+			while (ft_is_attribute(*format))
 			{
 				/* if (*format == '0' || *format == '-')*/
 				/* Nous avons donc un attribut à traiter, gestion alignement et
@@ -77,13 +78,16 @@ int	ft_printf(const char *format, ...)
 				/* Si - remplissage à droite avec des espaces sauf si n, prend
 				** la priorité si associé avec 0*/
 				/* Par défaut alignement à droite*/
+				/* Faire une condition que si - et 0 en meme temps alors - */
 				flag->has_attribute = 1;
 				flag->attribute = *format;
-				ft_putstr_fd(flag->attribute, 1);
+				ft_putstr_fd(&flag->attribute, 1);
 				ft_putstr_fd("Il y a un alignement à gerer\n", 1);
-				ft_putstr_fd((char *)v_arg, 1);
+				/*ft_putstr_fd((char *)v_arg, 1);*/
+				format++;
 			}
-			else if (ft_isdigit(*format) /*&& *(format - 1) != '.'*/)
+			/*else if (*format != '0' || ft_isdigit(*format)*/
+			if (*format >= '1' && *format <= '9')
 			{
 				/* Nous avons donc une largeur de champ à gérer, attention il
 				** peut y avoir une étoile remplaçant cette valeur, il faut la
@@ -97,8 +101,9 @@ int	ft_printf(const char *format, ...)
 				/* Pas de troncature avec ce flag, si la largeur est inf à la
 				** taille de l'argument la largeur s'adapte à cette taille */
 				flag->has_field_width = 1;
-				flag->width = ft_atoi(format)
-				ft_putstr_fd((char *)v_arg, 1);
+				flag->width = ft_atoi(format);
+				ft_putnbr_fd(flag->width, 1);
+			/*	ft_putstr_fd((char *)v_arg, 1);*/
 				ft_putstr_fd("Il y a une largeur de champ à gérer\n", 1);
 			}
 			else if (*format == '.' && (ft_isdigit(*(++format)))) 
@@ -112,9 +117,9 @@ int	ft_printf(const char *format, ...)
 				** champ affiche alors "précision" max char */
 				flag->has_precision = 1;
 				flag->precision = ft_atoi(format);
-				ft_putnbr_fd(flag->precision, 1);
+				/*ft_putnbr_fd(flag->precision, 1);
 				ft_putstr_fd("Il y a une précision à gérer\n", 1);
-				ft_putstr_fd((char *)v_arg, 1);
+				ft_putstr_fd((char *)v_arg, 1);*/
 				/*format += ft_intlen(ft_atoi(format));*/
 			}
 			else if (ft_is_indicator(*format))
@@ -127,6 +132,16 @@ int	ft_printf(const char *format, ...)
 				flag->indicator = *format;
 				ft_putstr_fd("Il y a une conversion de l'argument courant à effectuer\n", 1);
 				ft_putstr_fd((char *)v_arg, 1);
+				if (flag->indicator == '%')
+					ft_putchar_fd('%', 1);
+				else if (flag->indicator == 'd' || flag->indicator == 'i')
+					ft_putnbr_fd((int)v_arg, 1);
+				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
+					ft_putnbr_fd((unsigned int)v_arg, 1); /* ft_putnbr_base */
+				else if (flag->indicator == 'c' || flag->indicator == 's')
+					ft_putstr_fd((char *)v_arg, 1);
+				else if (flag->indicator == 'p')
+					ft_putstr_fd((char *)v_arg, 1);
 			}
 			else
 				ft_putstr_fd((char *)v_arg, 1);
