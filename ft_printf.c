@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/19 18:25:00 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/21 11:12:03 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 typedef struct s_printf_flags
 {
-	int	has_attribute;
-	int	has_field_length;
-	int	has_precision;
-	int	has_indicator;
+	int		has_attribute;
+	char	attribute;
+	int		has_field_width;
+	int		width;
+	int		has_precision;
+	int		precision;
+	int		has_indicator;
+	char	indicator;
 }				t_printf_flags;
 
 int	ft_is_attribute(int c)
@@ -40,7 +44,7 @@ int	ft_is_precision(int c, int next_c)
 
 int	ft_is_indicator(int c)
 {
-	if (!ft_strchr("diuxXcsp", c))
+	if (!ft_strchr("diuxXcsp%", c))
 		return (0);
 	return (1);
 }
@@ -51,7 +55,7 @@ int	ft_printf(const char *format, ...)
 	void			*v_arg;
 	t_printf_flags	*flag;
 
-	flag = &(t_printf_flags){0, 0, 0, 0};
+	flag = &(t_printf_flags){0, 0, 0, 0, 0, 0, 0, 0};
 	va_start(args, format);
 	while (*format)
 	{
@@ -61,13 +65,11 @@ int	ft_printf(const char *format, ...)
 		if (*format == '%' && *(++format))
 		{
 			v_arg = va_arg(args, void *);
-			if (*format == '%')
+			if (*format == '%') /* A placer avec les indicateurs de conversion */
 				ft_putchar_fd('%', 1);
 			else if (ft_is_attribute(*format))
-			/*else if (*format == '0' || *format == '-')*/
 			{
 				/* if (*format == '0' || *format == '-')*/
-				/* Test vogspehere a distance apres anno*/
 				/* Nous avons donc un attribut à traiter, gestion alignement et
 				** remplissage*/
 				/* Si 0 remplissage à gauche avec des 0 si d i o u x X, sinon
@@ -76,6 +78,8 @@ int	ft_printf(const char *format, ...)
 				** la priorité si associé avec 0*/
 				/* Par défaut alignement à droite*/
 				flag->has_attribute = 1;
+				flag->attribute = *format;
+				ft_putstr_fd(flag->attribute, 1);
 				ft_putstr_fd("Il y a un alignement à gerer\n", 1);
 				ft_putstr_fd((char *)v_arg, 1);
 			}
@@ -92,12 +96,13 @@ int	ft_printf(const char *format, ...)
 				** chiffres et itérer sur *format le cas échéant */
 				/* Pas de troncature avec ce flag, si la largeur est inf à la
 				** taille de l'argument la largeur s'adapte à cette taille */
-				flag->has_field_length = 1;
+				flag->has_field_width = 1;
+				flag->width = ft_atoi(format)
 				ft_putstr_fd((char *)v_arg, 1);
 				ft_putstr_fd("Il y a une largeur de champ à gérer\n", 1);
 			}
-			else if (*format == '.' && (ft_isdigit(*(++format))))
-			/*else if (*format == '.' && (ft_isdigit(*(format + 1))))*/
+			else if (*format == '.' && (ft_isdigit(*(++format)))) 
+				/* Attention cette condition ne considere pas une precision de . qui est valide mais indique une precision 0 */
 			{
 				/* Nous avons une précision à gérer, une précision est tjs
 				** suivie d'un nombre, faire attention car il semblerait qu'une
@@ -106,17 +111,20 @@ int	ft_printf(const char *format, ...)
 				/* Si précision sur chaine de char associée à une largeur de
 				** champ affiche alors "précision" max char */
 				flag->has_precision = 1;
-				ft_putstr_fd((char *)v_arg, 1);
+				flag->precision = ft_atoi(format);
+				ft_putnbr_fd(flag->precision, 1);
 				ft_putstr_fd("Il y a une précision à gérer\n", 1);
+				ft_putstr_fd((char *)v_arg, 1);
+				/*format += ft_intlen(ft_atoi(format));*/
 			}
 			else if (ft_is_indicator(*format))
-			/*else if (*format == 'd' || *format == 'i' || *format == 'u' || *format == 'x' || *format == 'X' || *format == 'c' || *format == 's' || *format == 'p')*/
 			{
 				/* if (*format == 'd' || *format == 'i' || *format == 'u' ||
 				 *format == 'x' || *format == 'X' || *format == 'c' ||
 				 *format == 's' || *format == 'p')*/
 				/* Nous avons donc un indicateur de conversion à gérer */
 				flag->has_indicator = 1;
+				flag->indicator = *format;
 				ft_putstr_fd("Il y a une conversion de l'argument courant à effectuer\n", 1);
 				ft_putstr_fd((char *)v_arg, 1);
 			}
