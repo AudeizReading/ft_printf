@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/21 22:24:55 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/22 18:27:02 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,23 @@ int	ft_printf(const char *format, ...)
 	t_printf_flags	*flag;
 
 	p_format = (char *)format;
+	if (!p_format)
+	{
+		ft_putendl_fd("(null)", 1);
+		return (0);
+	}
 	(void) res;
 	flag = &(t_printf_flags){0, 0, 0, 0, 0, 0, 0, 0};
 	va_start(args, format);
-	ft_putendl_fd((char *)p_format, 1);
+	//ft_putendl_fd((char *)p_format, 1);
 	while (*p_format)
 	{
 		/* Il faudrait également vérifier qu'il y a autant de % que d'arguments
 		** en bouclant sur va_arg, donc on ferait deux boucles sur les params
 		** variadiques */
-	//	if (*p_format == '%' && *(++p_format))
-		if (*p_format == '%')
+		if (*p_format == '%' && *(++p_format))
+	//	if (*p_format == '%')
 		{
-			p_format++;
 			v_arg = va_arg(args, void *);
 			while (ft_is_attribute(*p_format))
 			{
@@ -111,7 +115,7 @@ int	ft_printf(const char *format, ...)
 				ft_putstr_fd((char *)v_arg, 1);*/
 				p_format++;
 			}
-			if (*p_format >= '1' && *p_format <= '9')
+			/*else*/ if (*p_format >= '1' && *p_format <= '9')
 			{
 				/* Nous avons donc une largeur de champ à gérer, attention il
 				** peut y avoir une étoile remplaçant cette valeur, il faut la
@@ -131,7 +135,7 @@ int	ft_printf(const char *format, ...)
 				ft_putstr_fd("Il y a une largeur de champ à gérer\n", 1);*/
 				p_format += ft_intlen(flag->width);
 			}
-			if (*p_format == '.' && (ft_isdigit(*(++p_format)))) 
+			else if (*p_format == '.' && (ft_isdigit(*(++p_format)))) 
 				/* Attention cette condition ne considere pas une precision de . qui est valide mais indique une precision 0 */
 			{
 				/* Nous avons une précision à gérer, une précision est tjs
@@ -140,19 +144,27 @@ int	ft_printf(const char *format, ...)
 				/* Indique le nombre de chiffres de l'argument à afficher */
 				/* Si précision sur chaine de char associée à une largeur de
 				** champ affiche alors "précision" max char */
+				// Faire attention a une precision negative
 				flag->has_precision = 1;
 				flag->precision = ft_atoi(p_format);
 			/*	ft_putnbr_fd(flag->precision, 1);
 				ft_putstr_fd("Il y a une précision à gérer\n", 1);*/
 				p_format += ft_intlen(flag->precision);
 			}
-			if (ft_is_indicator(*p_format))
+			else if (ft_is_indicator(*p_format))
 			{
 				flag->has_indicator = 1;
 				flag->indicator = *p_format;
-			/*	ft_putstr_fd("Il y a une conversion de l'argument courant à effectuer\n", 1);*/
+			//	ft_putchar_fd(*p_format, 1);
+			//	ft_putchar_fd(flag->indicator, 1);
+		//		ft_putchar_fd(flag->indicator, 1);
+			//	ft_putstr_fd("Il y a une conversion de l'argument courant à effectuer\n", 1);/**/
 				if (flag->indicator == '%')
+				{
+					ft_putendl_fd("\nVerif de condition", 1);
+					//ft_putchar_fd(flag->indicator, 1);
 					ft_putchar_fd(*p_format, 1);
+				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 					ft_putnbr_fd((int)v_arg, 1);
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
@@ -163,12 +175,12 @@ int	ft_printf(const char *format, ...)
 				else if (flag->indicator == 'p')
 					ft_putstr_fd((char *)v_arg, 1);
 			}
-			//else
-				//ft_putchar_fd((char)*p_format, 1);
 		}
 		else
 			ft_putchar_fd((char)*p_format, 1);
 		p_format++;
+		// If I don't put a \n here, if there is no \n at the end, there is no output, don't know why because on the wsl this matter doesn't exist
+		//ft_putchar_fd('\n', 1);
 	}
 	va_end(args);
 	return (0);
