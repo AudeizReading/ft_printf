@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/22 18:27:02 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/22 22:42:53 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,53 @@ int	ft_is_indicator(int c)
 	return (1);
 }
 
+int		ft_check_base(char *base, int *base_2_convert)
+{
+	while (base[*base_2_convert])
+	{
+		if (base[*base_2_convert] == base[*base_2_convert + 1]\
+				|| base[*base_2_convert] == 43 || base[*base_2_convert] == 45\
+				|| base[*base_2_convert] <= 32 || base[*base_2_convert] >= 126)
+			return (1);
+		(*base_2_convert)++;
+	}
+	if (*base_2_convert < 2)
+		return (1);
+	return (0);
+}
+
+
 void	ft_putnbr_base(int nbr, char *base)
 {
 	long int	l_nbr;
-	(void)base;
+	int			size_base;
 
 	l_nbr = nbr;
+	size_base = 0;
+	if (ft_check_base(base, &size_base))
+			return;
 	if (l_nbr < 0)
 	{
 		ft_putchar_fd('-', 1);
 		l_nbr = -l_nbr;
 	}
-	if (l_nbr >= 10)
-		ft_putnbr_base(l_nbr / 10, base);
-	ft_putchar_fd(l_nbr % 10 + '0', 1);
+	if (l_nbr >= size_base)
+		ft_putnbr_base(l_nbr / size_base, base);
+	ft_putchar_fd(base[l_nbr % size_base], 1);
+}
+
+void	ft_u_putnbr_base(unsigned int nbr, char *base)
+{
+	unsigned int	l_nbr;
+	int				size_base;
+
+	l_nbr = nbr;
+	size_base = 0;
+	if (ft_check_base(base, &size_base))
+			return;
+	if (l_nbr >= (unsigned int)size_base)
+		ft_putnbr_base(l_nbr / size_base, base);
+	ft_putchar_fd(base[l_nbr % size_base], 1);
 }
 
 int	ft_printf(const char *format, ...)
@@ -155,21 +188,22 @@ int	ft_printf(const char *format, ...)
 			{
 				flag->has_indicator = 1;
 				flag->indicator = *p_format;
-			//	ft_putchar_fd(*p_format, 1);
-			//	ft_putchar_fd(flag->indicator, 1);
-		//		ft_putchar_fd(flag->indicator, 1);
-			//	ft_putstr_fd("Il y a une conversion de l'argument courant à effectuer\n", 1);/**/
 				if (flag->indicator == '%')
 				{
-					ft_putendl_fd("\nVerif de condition", 1);
-					//ft_putchar_fd(flag->indicator, 1);
 					ft_putchar_fd(*p_format, 1);
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
-					ft_putnbr_fd((int)v_arg, 1);
-				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
+				//	ft_putnbr_fd((int)v_arg, 1);
 					ft_putnbr_base((unsigned int)v_arg,"0123456789");
-					/*ft_putnbr_fd((unsigned int)v_arg, 1);  ft_putnbr_base */
+				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
+				{
+					if (flag->indicator == 'u')
+						ft_u_putnbr_base((unsigned int)v_arg, "0123456789");
+					else if (flag->indicator == 'x')
+						ft_u_putnbr_base((unsigned int)v_arg,"0123456789abcdef");
+					else
+						ft_u_putnbr_base((unsigned int)v_arg,"0123456789ABCDEF");
+				}
 				else if (flag->indicator == 'c' || flag->indicator == 's')
 					ft_putstr_fd((char *)v_arg, 1);
 				else if (flag->indicator == 'p')
@@ -180,6 +214,8 @@ int	ft_printf(const char *format, ...)
 			ft_putchar_fd((char)*p_format, 1);
 		p_format++;
 		// If I don't put a \n here, if there is no \n at the end, there is no output, don't know why because on the wsl this matter doesn't exist
+		// It is stdout the problem -> This file is buffered before getting out its flow, so it is an expected behavior, thank you for having past one day and half on it...
+		// For testing send the output toward arbitrary file descriptor that it is not stdout and make a diff a the ft_printf file and the printf file
 		//ft_putchar_fd('\n', 1);
 	}
 	va_end(args);
