@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/23 16:39:06 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/23 21:21:57 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_is_attribute(int c)
 
 int ft_is_field_width(int c)
 {
-	if (c < '1' || c > '9'/* || c == '*'*/)
+	if (c < '1' || c > '9')
 		return (0);
 	return (1);
 }
@@ -182,6 +182,7 @@ int	ft_printf(const char *format, ...)
 				/* Indique le nombre de chiffres de l'argument à afficher */
 				/* Si précision sur chaine de char associée à une largeur de
 				** champ affiche alors "précision" max char */
+				// Gerer etoile, est ce qu'un nombre accompagne l'etoile ?
 				flag->has_precision = 1;
 				while (*(p_format + 1) == '-')
 					p_format++;
@@ -189,6 +190,12 @@ int	ft_printf(const char *format, ...)
 				{
 					flag->precision = ft_atoi(p_format);
 					p_format += ft_intlen(flag->precision);
+				}
+				else if (*p_format == '*')
+				{
+					flag->precision = (int)v_arg;
+					v_arg = va_arg(args, void *);
+					p_format++;
 				}
 				else
 					flag->precision = 0;
@@ -212,6 +219,7 @@ int	ft_printf(const char *format, ...)
 				}
 				else if (flag->indicator == 'c' || flag->indicator == 's')
 					// C'est ici qu'il faut gerer le (null)
+					// Creer une fn putstr qui retourne le nb d'octets lus et recup cette valeur dans res
 					ft_putstr_fd((char *)v_arg, 1);
 				else if (flag->indicator == 'p')
 					ft_putstr_fd((char *)v_arg, 1);
