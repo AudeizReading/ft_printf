@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/23 21:21:57 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/23 21:36:58 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,16 @@ int	ft_is_indicator(int c)
 int	ft_int_putchar_fd(char c, int fd)
 {
 	return (write(fd, &c, 1));
+}
+
+int	ft_int_putstr_fd(char *str, int fd)
+{
+	int	res;
+
+	res = 0;
+	while (*str)
+		res += ft_int_putchar_fd(*str++, fd);
+	return (res);
 }
 
 int		ft_check_base(char *base, int *base_2_convert)
@@ -220,9 +230,11 @@ int	ft_printf(const char *format, ...)
 				else if (flag->indicator == 'c' || flag->indicator == 's')
 					// C'est ici qu'il faut gerer le (null)
 					// Creer une fn putstr qui retourne le nb d'octets lus et recup cette valeur dans res
-					ft_putstr_fd((char *)v_arg, 1);
+				//	ft_putstr_fd((char *)v_arg, 1);
+					res += ft_int_putstr_fd((char *)v_arg, 1);
 				else if (flag->indicator == 'p')
-					ft_putstr_fd((char *)v_arg, 1);
+					res += ft_int_putstr_fd((char *)v_arg, 1);
+					//ft_putstr_fd((char *)v_arg, 1);
 			}
 		}
 		else
@@ -231,5 +243,6 @@ int	ft_printf(const char *format, ...)
 	}
 	va_end(args);
 	//ft_putnbr_fd(res, 1);
+	//ft_putnbr_fd(ft_int_putstr_fd(" Test fn\n", 1), 1);
 	return (res);
 }
