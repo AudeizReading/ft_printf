@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/22 23:44:54 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/23 11:30:06 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ int	ft_is_attribute(int c)
 	return (1);
 }
 
-/*int ft_is_field_lenght(int c, int prev_c)
+int ft_is_field_width(int c)
 {
-	if (!ft_strchr(".", int c))
+	if (c < '1' || c > '9')
 		return (0);
 	return (1);
 }
 
-int	ft_is_precision(int c, int next_c)
+/*int	ft_is_precision(int c, int next_c)
 {
 }*/
 
@@ -47,6 +47,11 @@ int	ft_is_indicator(int c)
 	if (!ft_strchr("diuxXcsp%", c))
 		return (0);
 	return (1);
+}
+
+int	ft_int_putchar_fd(char c, int fd)
+{
+	return (write(fd, &c, 1));
 }
 
 int		ft_check_base(char *base, int *base_2_convert)
@@ -65,7 +70,7 @@ int		ft_check_base(char *base, int *base_2_convert)
 }
 
 
-void	ft_putnbr_base(int nbr, char *base)
+/*void	ft_putnbr_base(int nbr, char *base)
 {
 	long int	l_nbr;
 	int			size_base;
@@ -82,19 +87,46 @@ void	ft_putnbr_base(int nbr, char *base)
 	if (l_nbr >= size_base)
 		ft_putnbr_base(l_nbr / size_base, base);
 	ft_putchar_fd(base[l_nbr % size_base], 1);
+}*/
+
+int	ft_putnbr_base(int nbr, char *base, int restart)
+{
+	long int	l_nbr;
+	static int	res = 0;
+	int			size_base;
+
+	if (restart)
+		res = 0;
+	l_nbr = nbr;
+	size_base = 0;
+	if (ft_check_base(base, &size_base))
+			return (-1);
+	if (l_nbr < 0)
+	{
+		ft_putchar_fd('-', 1);
+		l_nbr = -l_nbr;
+		res++;
+	}
+	if (l_nbr >= size_base)
+	{
+		ft_putnbr_base(l_nbr / size_base, base, 0);
+	}
+//	ft_putchar_fd(base[l_nbr % size_base], 1);
+	res += ft_int_putchar_fd(base[l_nbr % size_base], 1);
+	return (res);
 }
 
-void	ft_u_putnbr_base(unsigned int nbr, char *base)
+void	ft_luint_putnbr_base(unsigned int nbr, char *base)
 {
-	unsigned int	l_nbr;
-	int				size_base;
+	unsigned long int	l_nbr;
+	int					size_base;
 
 	l_nbr = nbr;
 	size_base = 0;
 	if (ft_check_base(base, &size_base))
 			return;
 	if (l_nbr >= (unsigned int)size_base)
-		ft_putnbr_base(l_nbr / size_base, base);
+		ft_luint_putnbr_base(l_nbr / size_base, base);
 	ft_putchar_fd(base[l_nbr % size_base], 1);
 }
 
@@ -144,7 +176,7 @@ int	ft_printf(const char *format, ...)
 				flag->attribute = *p_format;
 				p_format++;
 			}
-			if (*p_format >= '1' && *p_format <= '9')
+			if (ft_is_field_width(*p_format))
 			{
 				/* Nous avons donc une largeur de champ à gérer, attention il
 				** peut y avoir une étoile remplaçant cette valeur, il faut la
@@ -189,15 +221,15 @@ int	ft_printf(const char *format, ...)
 					ft_putchar_fd(*p_format, 1);
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
-					ft_putnbr_base((unsigned int)v_arg,"0123456789");
+					ft_putnbr_base(ft_putnbr_base((unsigned int)v_arg,"0123456789", 1), "0123456789", 1);
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{
 					if (flag->indicator == 'u')
-						ft_u_putnbr_base((unsigned int)v_arg, "0123456789");
+						ft_luint_putnbr_base((unsigned int)v_arg, "0123456789");
 					else if (flag->indicator == 'x')
-						ft_u_putnbr_base((unsigned int)v_arg,"0123456789abcdef");
+						ft_luint_putnbr_base((unsigned int)v_arg,"0123456789abcdef");
 					else
-						ft_u_putnbr_base((unsigned int)v_arg,"0123456789ABCDEF");
+						ft_luint_putnbr_base((unsigned int)v_arg,"0123456789ABCDEF");
 				}
 				else if (flag->indicator == 'c' || flag->indicator == 's')
 					ft_putstr_fd((char *)v_arg, 1);
