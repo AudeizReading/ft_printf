@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/23 21:36:58 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/23 22:33:50 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ int	ft_printf(const char *format, ...)
 				if (flag->indicator == '%')
 					res += ft_int_putchar_fd(*p_format, 1);
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
-					res += ft_putnbr_base((unsigned int)v_arg,"0123456789", 1);
+					res += ft_putnbr_base((int)v_arg,"0123456789", 1);
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{
 					if (flag->indicator == 'u')
