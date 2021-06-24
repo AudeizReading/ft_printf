@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/23 22:33:50 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/24 14:15:07 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,13 @@ int	ft_printf(const char *format, ...)
 				/* Par défaut alignement à droite*/
 
 				/* Faire une condition que si - et 0 en meme temps alors - */
+
 				flag->has_attribute = 1;
-				flag->attribute = *p_format;
+				if ((flag->attribute == '0' && *p_format == '-') ||
+						(flag->attribute == '-' && *p_format == '0'))
+					flag->attribute = '-';
+				else
+					flag->attribute = *p_format;
 				p_format++;
 			}
 			if (ft_is_field_width(*p_format) || *p_format == '*')
@@ -244,5 +249,8 @@ int	ft_printf(const char *format, ...)
 	va_end(args);
 	//ft_putnbr_fd(res, 1);
 	//ft_putnbr_fd(ft_int_putstr_fd(" Test fn\n", 1), 1);
+	ft_putstr_fd("Attribut : ", 1);
+	ft_putstr_fd(&flag->attribute, 1);
+	ft_putstr_fd("\n", 1);
 	return (res);
 }
