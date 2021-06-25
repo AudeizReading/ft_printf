@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/24 14:15:07 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/25 11:07:51 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ft_putnbr_base(int nbr, char *base, int restart)
 	return (res);
 }
 
-int	ft_luint_putnbr_base(unsigned int nbr, char *base, int restart)
+int	ft_luint_putnbr_base(unsigned long int nbr, char *base, int restart)
 {
 	unsigned long int	l_nbr;
 	int					size_base;
@@ -172,8 +172,6 @@ int	ft_printf(const char *format, ...)
 				** d'une largeur de champ */
 				/* Remplissage avec des espaces sur la droite, sauf si attribut
 				** */
-				/* Attention, checker si la largeur est un nombre à plusieurs
-				** chiffres et itérer sur *format le cas échéant */
 				/* Pas de troncature avec ce flag, si la largeur est inf à la
 				** taille de l'argument la largeur s'adapte à cette taille */
 				flag->has_field_width = 1;
@@ -193,7 +191,7 @@ int	ft_printf(const char *format, ...)
 			{
 				/* Nous avons une précision à gérer, une précision est tjs
 				** suivie d'un nombre, faire attention car il semblerait qu'une
-				** précision puisse être negative */
+				** précision puisse être negative  (avec flag *) */
 				/* Indique le nombre de chiffres de l'argument à afficher */
 				/* Si précision sur chaine de char associée à une largeur de
 				** champ affiche alors "précision" max char */
@@ -233,12 +231,19 @@ int	ft_printf(const char *format, ...)
 						res += ft_luint_putnbr_base((unsigned int)v_arg,"0123456789ABCDEF", 1);
 				}
 				else if (flag->indicator == 'c' || flag->indicator == 's')
-					// C'est ici qu'il faut gerer le (null)
-					// Creer une fn putstr qui retourne le nb d'octets lus et recup cette valeur dans res
-				//	ft_putstr_fd((char *)v_arg, 1);
-					res += ft_int_putstr_fd((char *)v_arg, 1);
+				{
+					if (!v_arg && flag->indicator == 's')
+						res += ft_int_putstr_fd("(null)", 1);
+					else if (flag->indicator == 'c')
+						res += ft_int_putchar_fd((char)v_arg, 1);
+					else
+						res += ft_int_putstr_fd((char *)v_arg, 1);
+				}
 				else if (flag->indicator == 'p')
-					res += ft_int_putstr_fd((char *)v_arg, 1);
+				{
+					res += ft_int_putstr_fd("0x", 1);
+					res += ft_luint_putnbr_base((unsigned long int)&(*v_arg), "0123456789abcdef", 1);
+				}
 					//ft_putstr_fd((char *)v_arg, 1);
 			}
 		}
@@ -249,8 +254,8 @@ int	ft_printf(const char *format, ...)
 	va_end(args);
 	//ft_putnbr_fd(res, 1);
 	//ft_putnbr_fd(ft_int_putstr_fd(" Test fn\n", 1), 1);
-	ft_putstr_fd("Attribut : ", 1);
-	ft_putstr_fd(&flag->attribute, 1);
-	ft_putstr_fd("\n", 1);
+	//ft_putstr_fd("Attribut : ", 1);
+	//ft_putstr_fd(&flag->attribute, 1);
+	//ft_putstr_fd("\n", 1);
 	return (res);
 }
