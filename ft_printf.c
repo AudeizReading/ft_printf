@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/25 11:07:51 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/25 21:41:15 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ int ft_is_field_width(int c)
 	return (1);
 }
 
-/*int	ft_is_precision(int c, int next_c)
+int	ft_is_precision(int c)
 {
-}*/
+	if (c != '.')
+		return (0);
+	return (1);
+}
 
 int	ft_is_indicator(int c)
 {
@@ -174,6 +177,7 @@ int	ft_printf(const char *format, ...)
 				** */
 				/* Pas de troncature avec ce flag, si la largeur est inf à la
 				** taille de l'argument la largeur s'adapte à cette taille */
+				// Gerer le cas * avec arg < 0 (-> si - alors attribut = -)
 				flag->has_field_width = 1;
 				if (*p_format == '*')
 				{
@@ -187,7 +191,7 @@ int	ft_printf(const char *format, ...)
 					p_format += ft_intlen(flag->width);
 				}
 			}
-			if (*p_format == '.') 
+			if (ft_is_precision(*p_format)) 
 			{
 				/* Nous avons une précision à gérer, une précision est tjs
 				** suivie d'un nombre, faire attention car il semblerait qu'une
@@ -196,6 +200,9 @@ int	ft_printf(const char *format, ...)
 				/* Si précision sur chaine de char associée à une largeur de
 				** champ affiche alors "précision" max char */
 				// Gerer etoile, est ce qu'un nombre accompagne l'etoile ?
+				// gerer * avec arg < 0 -> de ce que je lis se calerait sur flag
+				// s en essayant d'afficher un nombre max < 0 de caracteres ->
+				// Undefined Behavior
 				flag->has_precision = 1;
 				while (*(p_format + 1) == '-')
 					p_format++;
