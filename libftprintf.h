@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 12:44:16 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/25 21:42:53 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/26 12:21:16 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 # define LIBFTPRINTF_H
 # include "./libft/libft.h"
 # include <stdarg.h>
+
+typedef struct s_printf_flags
+{
+	int		has_attribute;
+	char	attribute;
+	int		has_field_width;
+	int		width;
+	int		has_precision;
+	int		precision;
+	int		has_indicator;
+	char	indicator;
+}				t_printf_flags;
 
 int	ft_printf(const char *fmt, ...);
 int	ft_is_attribute(int c);

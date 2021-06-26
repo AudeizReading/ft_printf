@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/13 11:25:34 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/26 12:27:11 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ LDFLAGS=-L ./libft/ -lftprintf
 ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
 	printf\
+	is_flag\
 	))
 OBJ=$(SRC:.c=.o)
 

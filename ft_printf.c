@@ -6,13 +6,13 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/25 21:41:15 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/26 12:30:20 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-typedef struct s_printf_flags
+/*typedef struct s_printf_flags
 {
 	int		has_attribute;
 	char	attribute;
@@ -22,35 +22,35 @@ typedef struct s_printf_flags
 	int		precision;
 	int		has_indicator;
 	char	indicator;
-}				t_printf_flags;
+}				t_printf_flags;*/
 
-int	ft_is_attribute(int c)
+/*int	ft_is_attribute(int c)
 {
 	if (!ft_strchr("0-", c))
 		return (0);
 	return (1);
-}
+}*/
 
-int ft_is_field_width(int c)
+/*int ft_is_field_width(int c)
 {
 	if (c < '1' || c > '9')
 		return (0);
 	return (1);
-}
+}*/
 
-int	ft_is_precision(int c)
+/*int	ft_is_precision(int c)
 {
 	if (c != '.')
 		return (0);
 	return (1);
-}
+}*/
 
-int	ft_is_indicator(int c)
+/*int	ft_is_indicator(int c)
 {
 	if (!ft_strchr("diuxXcsp%", c))
 		return (0);
 	return (1);
-}
+}*/
 
 int	ft_int_putchar_fd(char c, int fd)
 {
