@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 13:17:17 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/27 13:32:36 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_int_putstr_fd(char *str, int fd)
 	return (res);
 }
 
-t_bool		ft_check_base(char *base, int *base_2_convert)
+t_bool		ft_check_invalid_base(char *base, int *base_2_convert)
 {
 	while (base[*base_2_convert])
 	{
@@ -52,7 +52,7 @@ int	ft_putnbr_base(int nbr, char *base, t_bool restart)
 		sum = 0;
 	l_nbr = nbr;
 	size_base = 0;
-	if (ft_check_base(base, &size_base))
+	if (ft_check_invalid_base(base, &size_base))
 			return (-1);
 	if (l_nbr < 0)
 	{
@@ -76,7 +76,7 @@ int	ft_luint_putnbr_base(unsigned long int nbr, char *base, t_bool restart)
 		sum = 0;
 	l_nbr = nbr;
 	size_base = 0;
-	if (ft_check_base(base, &size_base))
+	if (ft_check_invalid_base(base, &size_base))
 			return (-1);
 	if (l_nbr >= (unsigned int)size_base)
 		ft_luint_putnbr_base(l_nbr / size_base, base, false);
@@ -84,7 +84,7 @@ int	ft_luint_putnbr_base(unsigned long int nbr, char *base, t_bool restart)
 	return (sum);
 }
 
-void	set_attribute(t_printf_flags **flag, char **p_format)
+void	ft_set_attribute(t_printf_flags **flag, char **p_format)
 {
 	while (ft_is_attribute(**p_format))
 	{
@@ -106,7 +106,7 @@ void	set_attribute(t_printf_flags **flag, char **p_format)
 	}
 }
 
-void	set_width(t_printf_flags **flag, char **p_format, int v_arg)
+void	ft_set_width(t_printf_flags **flag, char **p_format, int v_arg)
 {
 	if (ft_is_field_width(**p_format) || **p_format == '*')
 	{
@@ -134,7 +134,7 @@ void	set_width(t_printf_flags **flag, char **p_format, int v_arg)
 	}
 }
 
-void	set_precision(t_printf_flags **flag, char **p_format, int v_arg)
+void	ft_set_precision(t_printf_flags **flag, char **p_format, int v_arg)
 {
 	if (ft_is_precision(**p_format)) 
 	{
@@ -198,11 +198,11 @@ int	ft_printf(const char *format, ...)
 		if (*p_format == '%' && *(++p_format))
 		{
 			v_arg = va_arg(args, void *);
-			set_attribute(&flag, &p_format);
-			set_width(&flag, &p_format, (int)v_arg);
+			ft_set_attribute(&flag, &p_format);
+			ft_set_width(&flag, &p_format, (int)v_arg);
 			if (flag->has_star_width)
 				v_arg = va_arg(args, void *);
-			set_precision(&flag, &p_format, (int)v_arg);
+			ft_set_precision(&flag, &p_format, (int)v_arg);
 			if (flag->has_star_precision)
 				v_arg = va_arg(args, void *);
 			if (ft_is_indicator(*p_format))

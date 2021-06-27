@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/26 12:27:11 by alellouc         ###   ########.fr        #
+#    Updated: 2021/06/27 13:34:09 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
 	printf\
 	is_flag\
+	set_flag\
 	))
 OBJ=$(SRC:.c=.o)
 
