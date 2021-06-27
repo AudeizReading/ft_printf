@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:41:48 by alellouc          #+#    #+#             */
-/*   Updated: 2021/04/24 17:21:07 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/27 14:21:29 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }				t_list;
+
+typedef enum e_bool
+{
+	false,
+	true
+}				t_bool;
 
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *s, size_t n);
@@ -71,4 +77,9 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+int		ft_int_putchar_fd(char c, int fd);
+int		ft_int_putstr_fd(char *str, int fd);
+t_bool	ft_check_invalid_base(char *base, int *base_2_convert);
+int		ft_putnbr_base(int nbr, char *base, t_bool restart);
+int		ft_luint_putnbr_base(unsigned long int nbr, char *base, t_bool restart);
 #endif

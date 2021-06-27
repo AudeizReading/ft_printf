@@ -6,12 +6,12 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 13:36:22 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/27 14:19:31 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
-
+/*
 int	ft_int_putchar_fd(char c, int fd)
 {
 	return (write(fd, &c, 1));
@@ -83,7 +83,7 @@ int	ft_luint_putnbr_base(unsigned long int nbr, char *base, t_bool restart)
 	sum += ft_int_putchar_fd(base[l_nbr % size_base], 1);
 	return (sum);
 }
-
+*/
 /*void	set_indicator(t_printf_flags **flag, char **p_format, int v_arg)
 {
 }*/
