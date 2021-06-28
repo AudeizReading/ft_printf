@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/28 15:35:02 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/28 16:59:42 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,13 @@ int	ft_printf(const char *format, ...)
 				if (flag->indicator == '%')
 					sum += ft_int_putchar_fd(*p_format, 1);
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
+				{
+					while (flag->has_precision && flag->precision-- > (int)ft_intlen((int) v_arg))
+					{
+						sum += ft_putnbr_base(0, "01", true);
+					}
 					sum += ft_putnbr_base((int)v_arg,"0123456789", true);
+				}
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{
 					if (flag->indicator == 'u')
