@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/28 16:59:42 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/28 21:56:37 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,17 @@ int	ft_printf(const char *format, ...)
 				flag->has_indicator = 1;
 				flag->indicator = *p_format;
 				if (flag->indicator == '%')
+				{
+					while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+						sum += ft_int_putchar_fd(' ', 1);
 					sum += ft_int_putchar_fd(*p_format, 1);
+				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
 					while (flag->has_precision && flag->precision-- > (int)ft_intlen((int) v_arg))
 					{
-						sum += ft_putnbr_base(0, "01", true);
+						//sum += ft_putnbr_base(0, "01", true);
+						sum += ft_int_putchar_fd('0', 1);
 					}
 					sum += ft_putnbr_base((int)v_arg,"0123456789", true);
 				}
@@ -90,5 +95,7 @@ int	ft_printf(const char *format, ...)
 		p_format++;
 	}
 	va_end(args);
+//	ft_putnbr_base(sum, "0123456789", true);
+//	ft_putchar_fd('\n', 1);
 	return (sum);
 }
