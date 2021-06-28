@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 13:32:43 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 13:33:41 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/28 15:11:15 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,15 @@ void	ft_set_precision(t_printf_flags **flag, char **p_format, int v_arg)
 		// s en essayant d'afficher un nombre max < 0 de caracteres ->
 		// Undefined Behavior
 		(*flag)->has_precision = true;
-	//	while (**(p_format + 1) == '-')
-	//		(*p_format)++;
+		while (*(*p_format + 1) == '-')
+		{
+			(*p_format)++;
+			(*flag)->has_precision = false;
+		}
 		if (ft_isdigit(*(++(*p_format))))
 		{
-			(*flag)->precision = ft_atoi(*p_format);
+			if ((*flag)->has_precision)
+				(*flag)->precision = ft_atoi(*p_format);
 			*p_format += ft_intlen((*flag)->precision);
 		}
 		else if (**p_format == '*')
@@ -89,10 +93,7 @@ void	ft_set_precision(t_printf_flags **flag, char **p_format, int v_arg)
 			(*flag)->has_star_precision = true;
 			(*flag)->precision = v_arg;
 			if ((*flag)->precision < 0)
-			{
-				(*flag)->has_precision = false;
 				(*flag)->precision = 0;
-			}
 			(*p_format)++;
 		}
 		else

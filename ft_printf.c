@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 15:27:26 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/28 15:35:02 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ft_printf(const char *format, ...)
 		** variadiques */
 		if (*p_format == '%' && *(++p_format))
 		{
-			if (/*!flag->indicator ||*/ flag->indicator != '%')
+			if (flag->indicator != '%')
 				v_arg = va_arg(args, void *);
 			ft_set_attribute(&flag, &p_format);
 			ft_set_width(&flag, &p_format, (int)v_arg);
@@ -49,16 +49,8 @@ int	ft_printf(const char *format, ...)
 			{
 				flag->has_indicator = 1;
 				flag->indicator = *p_format;
-			//	ft_putstr_fd("flag->indicator: ", 1);
-			//	ft_putendl_fd(&flag->indicator, 1);
-			//	ft_putnbr_base((int)v_arg,"0123456789", true);
-			//	ft_putchar_fd('\n', 1);
 				if (flag->indicator == '%')
-				{
-					// Le pb est du a l'incrementation de args si %% avant %d
 					sum += ft_int_putchar_fd(*p_format, 1);
-				//	break;
-				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 					sum += ft_putnbr_base((int)v_arg,"0123456789", true);
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
