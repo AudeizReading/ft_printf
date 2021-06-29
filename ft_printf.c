@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/28 21:56:37 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/29 15:57:18 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,22 @@ int	ft_printf(const char *format, ...)
 				flag->indicator = *p_format;
 				if (flag->indicator == '%')
 				{
-					while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
-						sum += ft_int_putchar_fd(' ', 1);
+					if (!flag->has_attribute)
+					{
+						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							sum += ft_int_putchar_fd(' ', 1);
+					}
+					else if (flag->attribute == '0')
+					{
+						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							sum += ft_int_putchar_fd('0', 1);
+					}
 					sum += ft_int_putchar_fd(*p_format, 1);
+					if (flag->attribute == '-')
+					{
+						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							sum += ft_int_putchar_fd(' ', 1);
+					}
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
