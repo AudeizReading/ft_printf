@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/30 11:04:31 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/30 21:53:15 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	ft_printf(const char *format, ...)
 				flag->indicator = *p_format;
 				if (flag->indicator == '%')
 				{
-					if (!flag->has_attribute)
+				/*	if (!flag->has_attribute)
 					{
 						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
 							sum += ft_int_putchar_fd(' ', 1);
@@ -108,7 +108,8 @@ int	ft_printf(const char *format, ...)
 					{
 						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
 							sum += ft_int_putchar_fd(' ', 1);
-					}
+					}*/
+					sum += ft_int_putchar_fd(*p_format, 1);
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
@@ -129,6 +130,9 @@ int	ft_printf(const char *format, ...)
 						size = arg_len;
 					if (size < flag->width)
 						fill_space = flag->width - size;
+				//	ft_putchar_fd('\n', 1);
+				//	ft_putnbr_fd(flag->width, 1);
+				//	ft_putchar_fd('\n', 1);
 					// gestion attribut par ici
 					if ((int)v_arg < 0)
 							fill_space--;
@@ -147,8 +151,14 @@ int	ft_printf(const char *format, ...)
 							sum += ft_int_putchar_fd('0', 1);
 					}
 					sum += ft_putnbr_di((int)v_arg, fill_0, true);
+				//	ft_putchar_fd('\n', 1);
+				//	ft_putchar_fd(flag->has_attribute, 1);
+				//	ft_putchar_fd('\n', 1);
 					if (flag->has_attribute == '-')
 					{
+						ft_putchar_fd('\n', 1);
+						ft_putnbr_fd(fill_space, 1);
+						ft_putchar_fd('\n', 1);
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd(' ', 1);
 					}
