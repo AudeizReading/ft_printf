@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/29 15:57:18 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/06/30 10:07:08 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,48 @@
 /*void	set_indicator(t_printf_flags **flag, char **p_format, int v_arg)
 {
 }*/
+size_t	ft_intlen_printf(int n)
+{
+	size_t		result;
+	long int	c;
+
+	c = n;
+	result = 1;
+	if (c < 0)
+	{
+		result++;
+		c = -c;
+	}
+	while (c / 10 > 0)
+	{
+		result++;
+		c /= 10;
+	}
+	return (result);
+}
+
+int	ft_putnbr_di(int nbr, int fill_0, t_bool restart)
+{
+	long int	l_nbr;
+	static int	sum = 0;
+	(void) fill_0;
+	(void) restart;
+	if (restart)
+		sum = 0;
+	l_nbr = nbr;
+	if (l_nbr < 0)
+	{
+		ft_putchar_fd('-', 1);
+		l_nbr = -l_nbr;
+		sum++;
+	}
+	while (fill_0-- > 0)
+		sum += ft_int_putchar_fd('0', 1);
+	if (l_nbr >= 10)
+		ft_putnbr_di(l_nbr / 10, fill_0, false);
+	sum += ft_int_putchar_fd(l_nbr % 10 + 48, 1);
+	return (sum);
+}
 
 int	ft_printf(const char *format, ...)
 {
@@ -70,12 +112,30 @@ int	ft_printf(const char *format, ...)
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
-					while (flag->has_precision && flag->precision-- > (int)ft_intlen((int) v_arg))
+				/*	while (flag->has_precision && flag->precision-- > (int)ft_intlen_printf((int) v_arg))
 					{
-						//sum += ft_putnbr_base(0, "01", true);
 						sum += ft_int_putchar_fd('0', 1);
+					}*/
+					int	fill_0;
+					int fill_space;
+					int size;
+					int arg_len;
+
+					fill_0 = 0;
+					fill_space = 0;
+					arg_len = (int)ft_intlen_printf((int)v_arg);
+					if (arg_len < flag->precision)
+					{
+						size = flag->precision;
+						fill_0 = size - arg_len;
 					}
-					sum += ft_putnbr_base((int)v_arg,"0123456789", true);
+					else
+						size = arg_len;
+					if (size < flag->width)
+						fill_space = flag->width - size;
+					while (fill_space-- > 0)
+						sum += ft_int_putchar_fd(' ', 1);
+					sum += ft_putnbr_di((int)v_arg, fill_0, true);
 				}
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{
@@ -100,7 +160,6 @@ int	ft_printf(const char *format, ...)
 					sum += ft_int_putstr_fd("0x", 1);
 					sum += ft_luint_putnbr_base((unsigned long int)&(*v_arg), "0123456789abcdef", 1);
 				}
-					//ft_putstr_fd((char *)v_arg, 1);
 			}
 		}
 		else
