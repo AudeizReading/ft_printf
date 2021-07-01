@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/01 12:02:42 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/01 17:11:42 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ int	ft_printf(const char *format, ...)
 					fill_0 = 0;
 					fill_space = 0;
 					arg_len = (int)ft_intlen_printf((int)v_arg);
+				/*	if (flag->has_precision && flag->precision == 0 && (int)v_arg == 0)
+						arg_len = 1;*/
 					if (arg_len < flag->precision)
 					{
 						size = flag->precision;
@@ -143,7 +145,6 @@ int	ft_printf(const char *format, ...)
 					// gestion attribut par ici
 					if ((int)v_arg < 0)
 							fill_space--;
-					//if ((!flag->has_attribute || (flag->attribute == '0' && flag->has_precision)) && flag->width)
 					if ((!flag->has_attribute || (flag->precision > 0 && flag->attribute == '0'))  && flag->width)
 					{
 						while (fill_space-- > 0)
@@ -156,20 +157,15 @@ int	ft_printf(const char *format, ...)
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd('0', 1);
 					}
-			/*		else
+					if (flag->has_precision && !flag->has_field_width && !flag->has_attribute && flag->precision == 0 && (int)v_arg == 0)
+						sum += 0;
+					else
+						sum += ft_putnbr_di((int)v_arg, fill_0, true);
+					if (flag->attribute == '-' && flag->has_field_width)
 					{
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd(' ', 1);
-					}*/
-					sum += ft_putnbr_di((int)v_arg, fill_0, true);
-				/*	if (flag->has_attribute == '-')
-					{
-						ft_putchar_fd('\n', 1);
-						ft_putnbr_fd(fill_space, 1);
-						ft_putchar_fd('\n', 1);
-						while (fill_space-- > 0)
-							sum += ft_int_putchar_fd(' ', 1);
-					}*/
+					}
 				}
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{

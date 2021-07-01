@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 13:32:43 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/28 15:11:15 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/01 13:59:37 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ void	ft_set_attribute(t_printf_flags **flag, char **p_format)
 		** la priorité si associé avec 0*/
 		/* Par défaut alignement à droite*/
 		//(*flag)->has_attribute = 1;
+		//ft_putendl_fd(&(**p_format), 1);
+		//ft_putchar_fd(**p_format, 1);
 		(*flag)->has_attribute = true;
-		if (((*flag)->attribute == '0' && **p_format == '-') ||
-				((*flag)->attribute == '-' && **p_format == '0'))
+		if (((*flag)->attribute == '0' && **p_format == '-') || ((*flag)->attribute == '-' && **p_format == '0'))
 			(*flag)->attribute = '-';
 		else
 			(*flag)->attribute = **p_format;
+		//ft_putchar_fd((*flag)->attribute, 1);
 		(*p_format)++;
 	}
 }
