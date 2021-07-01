@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/30 21:53:15 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/01 12:02:42 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_printf(const char *format, ...)
 
 	p_format = (char *)format;
 	sum = 0;
-	flag = &(t_printf_flags){false, 0, false, false, 0, true, false, 1, false, 0};
+	flag = &(t_printf_flags){false, 0, false, false, 0, true, false, 0, false, 0};
 	va_start(args, format);
 	while (*p_format)
 	{
@@ -93,23 +93,32 @@ int	ft_printf(const char *format, ...)
 				flag->indicator = *p_format;
 				if (flag->indicator == '%')
 				{
-				/*	if (!flag->has_attribute)
+				//	ft_putchar_fd('\n', 1);
+				//	ft_putchar_fd(*p_format, 1);
+				//	ft_putchar_fd(' ', 1);
+				//	ft_putnbr_fd(flag->width, 1);
+				//	ft_putchar_fd('\n', 1);
+					if (*(p_format - 1) != flag->indicator)
 					{
-						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
-							sum += ft_int_putchar_fd(' ', 1);
+						if (!flag->has_attribute)
+						{
+							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+								sum += ft_int_putchar_fd(' ', 1);
+						}
+						else if (flag->attribute == '0')
+						{
+							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+								sum += ft_int_putchar_fd('0', 1);
+						}
+						sum += ft_int_putchar_fd(*p_format, 1);
+						if (flag->attribute == '-')
+						{
+							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+								sum += ft_int_putchar_fd(' ', 1);
+						}
 					}
-					else if (flag->attribute == '0')
-					{
-						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
-							sum += ft_int_putchar_fd('0', 1);
-					}
-					sum += ft_int_putchar_fd(*p_format, 1);
-					if (flag->attribute == '-')
-					{
-						while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
-							sum += ft_int_putchar_fd(' ', 1);
-					}*/
-					sum += ft_int_putchar_fd(*p_format, 1);
+					else
+						sum += ft_int_putchar_fd(*p_format, 1);
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
@@ -130,38 +139,37 @@ int	ft_printf(const char *format, ...)
 						size = arg_len;
 					if (size < flag->width)
 						fill_space = flag->width - size;
-				//	ft_putchar_fd('\n', 1);
-				//	ft_putnbr_fd(flag->width, 1);
-				//	ft_putchar_fd('\n', 1);
+
 					// gestion attribut par ici
 					if ((int)v_arg < 0)
 							fill_space--;
-					if (!flag->has_attribute)
+					//if ((!flag->has_attribute || (flag->attribute == '0' && flag->has_precision)) && flag->width)
+					if ((!flag->has_attribute || (flag->precision > 0 && flag->attribute == '0'))  && flag->width)
 					{
-					/*	if ((int)v_arg < 0)
-							fill_space--;*/
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd(' ', 1);
 					}
 					if ((int)v_arg < 0)
 						ft_putchar_fd('-', 1);
-					if (flag->attribute == '0')
+					if (flag->attribute == '0' && flag->has_field_width && !flag->precision)
 					{
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd('0', 1);
 					}
+			/*		else
+					{
+						while (fill_space-- > 0)
+							sum += ft_int_putchar_fd(' ', 1);
+					}*/
 					sum += ft_putnbr_di((int)v_arg, fill_0, true);
-				//	ft_putchar_fd('\n', 1);
-				//	ft_putchar_fd(flag->has_attribute, 1);
-				//	ft_putchar_fd('\n', 1);
-					if (flag->has_attribute == '-')
+				/*	if (flag->has_attribute == '-')
 					{
 						ft_putchar_fd('\n', 1);
 						ft_putnbr_fd(fill_space, 1);
 						ft_putchar_fd('\n', 1);
 						while (fill_space-- > 0)
 							sum += ft_int_putchar_fd(' ', 1);
-					}
+					}*/
 				}
 				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
 				{
@@ -193,6 +201,7 @@ int	ft_printf(const char *format, ...)
 		p_format++;
 	}
 	va_end(args);
+	flag->width = 0;
 //	ft_putnbr_base(sum, "0123456789", true);
 //	ft_putchar_fd('\n', 1);
 	return (sum);
