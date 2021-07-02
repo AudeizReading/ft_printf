@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 12:44:16 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 14:31:18 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/02 08:17:55 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ typedef struct s_printf_flags
 {
 	t_bool		has_attribute;
 	char		attribute;
-	t_bool		has_field_width;
+	t_bool		has_width;
 	t_bool		has_star_width;
 	int			width;
 	t_bool		has_precision;
@@ -31,7 +31,7 @@ typedef struct s_printf_flags
 
 int	ft_printf(const char *fmt, ...);
 t_bool	ft_is_attribute(int c);
-t_bool	ft_is_field_width(int c);
+t_bool	ft_is_width(int c);
 t_bool	ft_is_precision(int c);
 t_bool	ft_is_indicator(int c);
 void	ft_set_attribute(t_printf_flags **flag, char **p_format);

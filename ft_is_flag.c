@@ -6,18 +6,12 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 12:23:24 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/26 21:37:53 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/02 11:21:11 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-/*int	ft_is_attribute(int c)
-{
-	if (!ft_strchr("0-", c))
-		return (0);
-	return (1);
-}*/
 
 t_bool	ft_is_attribute(int c)
 {
@@ -26,8 +20,7 @@ t_bool	ft_is_attribute(int c)
 	return (true);
 }
 
-
-t_bool ft_is_field_width(int c)
+t_bool ft_is_width(int c)
 {
 	if (c < '1' || c > '9')
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 13:32:43 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/01 13:59:37 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/02 08:18:48 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void	ft_set_attribute(t_printf_flags **flag, char **p_format)
 
 void	ft_set_width(t_printf_flags **flag, char **p_format, int v_arg)
 {
-	if (ft_is_field_width(**p_format) || **p_format == '*')
+	if (ft_is_width(**p_format) || **p_format == '*')
 	{
 		/* Remplissage avec des espaces sur la gauche, sauf si attribut -
 		** */
 		/* Pas de troncature avec ce flag, si la largeur est inf à la
 		** taille de l'argument la largeur s'adapte à cette taille */
-		(*flag)->has_field_width = true;
+		(*flag)->has_width = true;
 		if (**p_format == '*')
 		{
 			(*flag)->has_star_width = true;
@@ -52,6 +52,7 @@ void	ft_set_width(t_printf_flags **flag, char **p_format, int v_arg)
 			if ((*flag)->width < 0)
 			{
 				(*flag)->width *= -1;
+				(*flag)->has_attribute = true;
 				(*flag)->attribute = '-';
 			}
 			(*p_format)++;

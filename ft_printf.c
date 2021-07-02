@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/01 21:53:03 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/02 10:50:43 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ size_t	ft_intlen_printf(int n)
 	c = n;
 	result = 1;
 	if (c < 0)
-	{
-	//	result++;
 		c = -c;
-	}
 	while (c / 10 > 0)
 	{
 		result++;
@@ -87,6 +84,8 @@ int	ft_printf(const char *format, ...)
 			ft_set_precision(&flag, &p_format, (int)v_arg);
 			if (flag->has_star_precision)
 				v_arg = va_arg(args, void *);
+			if (flag->attribute == '0' && flag->has_precision)
+				flag->has_attribute = false;
 			if (ft_is_indicator(*p_format))
 			{
 				flag->has_indicator = 1;
@@ -97,18 +96,18 @@ int	ft_printf(const char *format, ...)
 					{
 						if (!flag->has_attribute)
 						{
-							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
 								sum += ft_int_putchar_fd(' ', 1);
 						}
 						else if (flag->attribute == '0')
 						{
-							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
 								sum += ft_int_putchar_fd('0', 1);
 						}
 						sum += ft_int_putchar_fd(*p_format, 1);
 						if (flag->attribute == '-')
 						{
-							while (flag->has_field_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(*p_format)))
 								sum += ft_int_putchar_fd(' ', 1);
 						}
 					}
@@ -117,16 +116,28 @@ int	ft_printf(const char *format, ...)
 				}
 				else if (flag->indicator == 'd' || flag->indicator == 'i')
 				{
-				/*	ft_putendl_fd("Precision :", 1);
+				/*	ft_putendl_fd("Has precision ?", 1);
+					ft_putnbr_fd(flag->has_precision, 1);
+					ft_putchar_fd('\n', 1);
+					ft_putendl_fd("Precision", 1);
 					ft_putnbr_fd(flag->precision, 1);
 					ft_putchar_fd('\n', 1);
-					ft_putendl_fd("Largeur :", 1);
+					ft_putendl_fd("Has width ?", 1);
+					ft_putnbr_fd(flag->has_width, 1);
+					ft_putchar_fd('\n', 1);
+					ft_putendl_fd("Largeur", 1);
 					ft_putnbr_fd(flag->width, 1);
 					ft_putchar_fd('\n', 1);
-					ft_putendl_fd("Attribut :", 1);
+					ft_putendl_fd("Has star width ?", 1);
+					ft_putnbr_fd(flag->has_star_width, 1);
+					ft_putchar_fd('\n', 1);
+					ft_putendl_fd("Attribut", 1);
 					ft_putchar_fd(flag->attribute, 1);
 					ft_putchar_fd('\n', 1);
-					ft_putendl_fd("Indicateur:", 1);
+					ft_putendl_fd("Has attribute ?", 1);
+					ft_putnbr_fd(flag->has_attribute, 1);
+					ft_putchar_fd('\n', 1);
+					ft_putendl_fd("Indicateur", 1);
 					ft_putchar_fd(flag->indicator, 1);
 					ft_putchar_fd('\n', 1);*/
 					int	fill_0;
@@ -146,26 +157,53 @@ int	ft_printf(const char *format, ...)
 						size = arg_len;
 					if (size < flag->width)
 						fill_space = flag->width - size;
+					// Gestion 0 avec precision 0
 					if (flag->has_precision && flag->precision == 0 && (int)v_arg == 0)
+					{
+						if (flag->has_width)
+						{
+							fill_space++;
+							while (fill_space-- > 0)
+								sum += ft_int_putchar_fd(' ', 1);
+						}
 						sum += 0;
+					}
 					else
 					{
 						if ((int)v_arg < 0)
 							fill_space--;
-						if ((!flag->has_attribute || (flag->precision > 0 && flag->attribute == '0'))  && flag->width)
+						if ((!flag->has_attribute || (flag->precision > 0 && flag->attribute == '0')))
 						{
+						/*	ft_putendl_fd("Precision", 1);
+							ft_putnbr_fd(flag->precision, 1);
+							ft_putchar_fd('\n', 1);
+							ft_putendl_fd("Largeur", 1);
+							ft_putnbr_fd(flag->width, 1);
+							ft_putchar_fd('\n', 1);
+							ft_putendl_fd("Has star width ?", 1);
+							ft_putnbr_fd(flag->has_star_width, 1);
+							ft_putchar_fd('\n', 1);
+							ft_putendl_fd("Attribut", 1);
+							ft_putchar_fd(flag->attribute, 1);
+							ft_putchar_fd('\n', 1);
+							ft_putendl_fd("Has attribute ?", 1);
+							ft_putnbr_fd(flag->has_attribute, 1);
+							ft_putchar_fd('\n', 1);
+							ft_putendl_fd("Indicateur", 1);
+							ft_putchar_fd(flag->indicator, 1);
+							ft_putchar_fd('\n', 1);*/
 							while (fill_space-- > 0)
 								sum += ft_int_putchar_fd(' ', 1);
 						}
 						if ((int)v_arg < 0)
 							ft_putchar_fd('-', 1);
-						if (flag->attribute == '0' && flag->has_field_width && !flag->precision)
+						if (flag->attribute == '0' && flag->has_width && !flag->precision)
 						{
 							while (fill_space-- > 0)
 								sum += ft_int_putchar_fd('0', 1);
 						}
 						sum += ft_putnbr_di((int)v_arg, fill_0, true);
-						if (flag->attribute == '-' && flag->has_field_width)
+						if (flag->attribute == '-' && (flag->has_width || flag->has_star_width))
 						{
 							while (fill_space-- > 0)
 								sum += ft_int_putchar_fd(' ', 1);
