@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 13:32:43 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/02 08:18:48 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/04 17:13:44 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ void	ft_set_attribute(t_printf_flags **flag, char **p_format)
 		//ft_putchar_fd(**p_format, 1);
 		(*flag)->has_attribute = true;
 		if (((*flag)->attribute == '0' && **p_format == '-') || ((*flag)->attribute == '-' && **p_format == '0'))
+		{
+		/*	ft_putendl_fd("Attribute avant changement: ", 1);
+			ft_putchar_fd((*flag)->attribute, 1);
+			ft_putchar_fd('\n', 1);*/
 			(*flag)->attribute = '-';
+		}
 		else
 			(*flag)->attribute = **p_format;
 		//ft_putchar_fd((*flag)->attribute, 1);
@@ -96,7 +101,7 @@ void	ft_set_precision(t_printf_flags **flag, char **p_format, int v_arg)
 			(*flag)->has_star_precision = true;
 			(*flag)->precision = v_arg;
 			if ((*flag)->precision < 0)
-				(*flag)->precision = 0;
+				(*flag)->precision = 1;
 			(*p_format)++;
 		}
 		else
