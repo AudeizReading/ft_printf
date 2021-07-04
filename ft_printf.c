@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/02 10:50:43 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/03 22:26:34 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ int	ft_printf(const char *format, ...)
 						}
 						if ((int)v_arg < 0)
 							ft_putchar_fd('-', 1);
-						if (flag->attribute == '0' && flag->has_width && !flag->precision)
+						if (flag->attribute == '0' && flag->has_width && !flag->has_precision)
 						{
 							while (fill_space-- > 0)
 								sum += ft_int_putchar_fd('0', 1);
