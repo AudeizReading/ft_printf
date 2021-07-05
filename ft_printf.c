@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/04 17:35:08 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/05 11:56:18 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,36 @@ int	ft_putnbr_di(int nbr, int fill_0, t_bool restart)
 {
 	long int	l_nbr;
 	static int	sum = 0;
-	(void) fill_0;
-	(void) restart;
 	if (restart)
 		sum = 0;
 	l_nbr = nbr;
 	if (l_nbr < 0)
-	{
-	//	ft_putchar_fd('-', 1);
 		l_nbr = -l_nbr;
-	//	sum++;
-	}
 	while (fill_0-- > 0)
 		sum += ft_int_putchar_fd('0', 1);
 	if (l_nbr >= 10)
 		ft_putnbr_di(l_nbr / 10, fill_0, false);
 	sum += ft_int_putchar_fd(l_nbr % 10 + 48, 1);
+	return (sum);
+}
+
+int	ft_putnbr_uxX(int nbr, char *base,  int fill_0, t_bool restart)
+{
+	unsigned long int	l_nbr;
+	int					size_base;
+	static int			sum = 0;
+
+	if (restart)
+		sum = 0;
+	l_nbr = nbr;
+	size_base = 0;
+	if (ft_check_invalid_base(base, &size_base))
+		return (-1);
+	while (fill_0-- > 0)
+		sum += ft_int_putchar_fd('0', 1);
+	if (l_nbr >= (unsigned int)size_base)
+		ft_putnbr_uxX(l_nbr / size_base, base, fill_0, false);
+	sum += ft_int_putchar_fd(base[l_nbr % size_base], 1);
 	return (sum);
 }
 
@@ -210,7 +224,26 @@ int	ft_printf(const char *format, ...)
 					if (!v_arg && flag->indicator == 's')
 						sum += ft_int_putstr_fd("(null)", 1);
 					else if (flag->indicator == 'c')
+					{
+						if (!flag->has_attribute)
+						{
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(v_arg)))
+								sum += ft_int_putchar_fd(' ', 1);
+						}
+						else if (flag->attribute == '0')
+						{
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(v_arg)))
+								sum += ft_int_putchar_fd('0', 1);
+						}
+						//sum += ft_int_putchar_fd(*p_format, 1);
 						sum += ft_int_putchar_fd((char)v_arg, 1);
+						if (flag->attribute == '-')
+						{
+							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&(v_arg)))
+								sum += ft_int_putchar_fd(' ', 1);
+						}
+					//	sum += ft_int_putchar_fd((char)v_arg, 1);
+					}
 					else
 						sum += ft_int_putstr_fd((char *)v_arg, 1);
 				}
