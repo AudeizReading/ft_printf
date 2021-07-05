@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/05 15:32:03 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/05 17:05:19 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int	ft_printf(const char *format, ...)
 							while (flag->has_width && flag->width-- > (int)ft_strlen((const char *)&("%")))
 								sum += ft_int_putchar_fd(' ', 1);
 						}
+						flag->attribute = 0;
 					}
 					else
 						sum += ft_int_putchar_fd(*p_format, 1);
