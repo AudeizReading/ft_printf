@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/13 12:44:16 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/02 13:06:03 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/07 14:44:45 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,23 @@
 # include "./libft/libft.h"
 # include <stdarg.h>
 
-typedef struct s_printf_flags
+typedef struct s_func
 {
-	t_bool		has_attribute;
-	char		attribute;
-	t_bool		has_width;
-	t_bool		has_star_width;
-	int			width;
-	t_bool		has_precision;
-	t_bool		has_star_precision;;
-	int			precision;
-	t_bool		has_indicator;
-	char		indicator;
-}				t_printf_flags;
+	int		(*p_func)(va_list args);
+	char	key;
+}				t_func;
 
-int	ft_printf(const char *fmt, ...);
-t_bool	ft_is_attribute(int c);
-t_bool	ft_is_width(int c);
-t_bool	ft_is_precision(int c);
+int		ft_printf(const char *fmt, ...);
 t_bool	ft_is_indicator(int c);
-void	ft_set_attribute(t_printf_flags **flag, char **p_format);
-void	ft_set_width(t_printf_flags **flag, char **p_format, int v_arg);
-void	ft_set_precision(t_printf_flags **flag, char **p_format, int v_arg);
+int		ft_set_ind_c(va_list args);
+int		ft_set_ind_s(va_list args);
+int		ft_set_ind_d(va_list args);
+int		ft_set_ind_i(va_list args);
+int		ft_set_ind_u(va_list args);
+int		ft_set_ind_x(va_list args);
+int		ft_set_ind_X(va_list args);
+int		ft_set_ind_p(va_list args);
+int		ft_set_ind_percent(va_list args);
+int		ft_parse_ind(char c, va_list args);
+
 #endif

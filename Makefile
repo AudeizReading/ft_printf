@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/06/27 13:34:09 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/07 15:30:14 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,12 +32,13 @@ LDFLAGS=-L ./libft/ -lftprintf
 ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
 	printf\
-	is_flag\
-	set_flag\
+	set_numeric_ind\
+	set_other_ind\
+	parse_ind\
 	))
 OBJ=$(SRC:.c=.o)
 
-.PHONY: clean fclean re all $(LIBFT) test
+.PHONY: clean fclean re all $(LIBFT)
 
 all: $(NAME)
 
@@ -49,9 +50,6 @@ $(NAME): $(SRC)
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
 	@$(MAKE) clean
-
-test: $(OBJ)
-	$(ECHO) $(OBJ)
 
 $(LIBFT):
 	@$(ECHO) "$(B_MAG)"
