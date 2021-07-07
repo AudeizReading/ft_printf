@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 08:12:37 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/07 10:23:20 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/07 12:08:25 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,6 @@ typedef struct	s_func
 	int		(*p_func)(va_list args);
 	char	key;
 }				t_func;
-
-/*t_func	g_tab[] = 
-{
-	(&ft_set_ind_c, 'c'),
-	(&ft_set_ind_s, 's'),
-	(&ft_set_ind_d, 'd'),
-	(&ft_set_ind_i, 'i'),
-	(&ft_set_ind_u, 'u'),
-	(&ft_set_ind_x, 'x'),
-	(&ft_set_ind_X, 'X'),
-	(&ft_set_ind_p, 'p'),
-	(&ft_set_ind_percent, '%'),
-	(NULL, -1)
-};*/
 
 int	ft_set_ind_c(va_list args)
 {
@@ -126,14 +112,52 @@ int	ft_set_ind_percent(va_list args)
 	sum = 0;
 	return (sum += ft_int_putchar_fd('%', 1));
 }
+t_func	*ft_set_functions_list(void)
+{
+	t_func	list[10];
+
+	list[0] = {&(ft_set_ind_c), 'c'};
+}
+
+t_func	g_tab[] = 
+{
+	{&(ft_set_ind_c), 'c'},
+	{&(ft_set_ind_s), 's'},
+	{&(ft_set_ind_d), 'd'},
+	{&(ft_set_ind_i), 'i'},
+	{&(ft_set_ind_u), 'u'},
+	{&(ft_set_ind_x), 'x'},
+	{&(ft_set_ind_X), 'X'},
+	{&(ft_set_ind_p), 'p'},
+	{&(ft_set_ind_percent), '%'},
+	{NULL, -1}
+};
+
+int	ft_parse_ind(char c, va_list args)
+{
+	int	i;
+	int	sum;
+
+	i = 0;
+	sum = 0;
+	while (g_tab[i].key != -1)
+	{
+		if (g_tab[i].key == c)
+		{
+			sum += g_tab[i].p_func(args);
+		}
+		i++;
+	}
+	return (sum);
+}
 
 int	ft_printf(const char *format, ...)
 {
 	int				sum;
 	char			*p_format;
 	va_list	 		args;
-//	void			*v_arg;
 	t_printf_flags	*flag;
+	t_func			tab[10];
 
 	p_format = (char *)format;
 	sum = 0;
@@ -144,47 +168,11 @@ int	ft_printf(const char *format, ...)
 	{
 		if (*p_format == '%' && *(++p_format))
 		{
-		/*	if (flag->indicator != '%')
-				v_arg = va_arg(args, void *);*/
 			if (ft_is_indicator(*p_format))
 			{
 				flag->has_indicator = 1;
 				flag->indicator = *p_format;
-				if (flag->indicator == '%')
-				//	sum += ft_int_putchar_fd(*p_format, 1);
-					sum += ft_set_ind_percent(args);
-				else if (flag->indicator == 'd' || flag->indicator == 'i')
-				//	sum += ft_putnbr_base((int)v_arg, "0123456789", true);
-					sum += ft_set_ind_d(args);
-				else if (flag->indicator == 'u' || flag->indicator == 'x' || flag->indicator == 'X')
-				{
-					if (flag->indicator == 'u')
-					//	sum += ft_luint_putnbr_base((unsigned int)v_arg, "0123456789", true);
-					sum += ft_set_ind_u(args);
-					else if (flag->indicator == 'x')
-					//	sum += ft_luint_putnbr_base((unsigned int)v_arg, "0123456789abcdef", true);
-					sum += ft_set_ind_x(args);
-					else
-					//	sum += ft_luint_putnbr_base((unsigned int)v_arg, "0123456789ABCDEF", true);
-					sum += ft_set_ind_X(args);
-				}
-				else if (flag->indicator == 'c')
-					sum += ft_set_ind_c(args);
-					//	sum += ft_int_putchar_fd((unsigned char)v_arg, 1);
-				else if (flag->indicator == 's')
-				{
-					sum += ft_set_ind_s(args);
-					//if (!v_arg)
-					//	sum += ft_int_putstr_fd("(null)", 1);
-					//else
-					//	sum += ft_int_putstr_fd((char *)v_arg, 1);
-				}
-				else if (flag->indicator == 'p')
-				{
-					sum += ft_set_ind_p(args);
-				//	sum += ft_int_putstr_fd("0x", 1);
-				//	sum += ft_luint_putnbr_base((unsigned long int)&(*v_arg), "0123456789abcdef", 1);
-				}
+				sum += ft_parse_ind(flag->indicator, args);
 			}
 		}
 		else
