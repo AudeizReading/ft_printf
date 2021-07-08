@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/07/08 20:24:11 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/08 21:21:30 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,9 +57,20 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_PATH) all
 	@$(ECHO) "$(FANCY_RESET)"
 
-test:
-	$(CC) $(CHEADERS) $(CFLAGS) -L. -lftprintf main.c -o $@
-	./$@
+test: ft_printf-test printf-test
+	diff -a --suppress-common-lines ft_printf.txt printf.txt
+	#$(RM) ft_printf.txt printf.txt
+
+ft_printf-test:
+	$(CC) $(CHEADERS) $(CFLAGS) -g -L. -lftprintf -D TEST -D FT_PRINTF main.c -o $@
+	./$@ > ft_printf.txt
+	valgrind ./$@
+	$(RM) $@
+
+printf-test:
+	$(CC) $(CHEADERS) $(CFLAGS) -g -L. -lftprintf -D TEST -D PRINTF main.c -o $@
+	./$@ > printf.txt
+	valgrind ./$@
 	$(RM) $@
 
 clean:
