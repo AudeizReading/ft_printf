@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/07/08 20:07:28 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/08 20:24:11 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,9 +57,10 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_PATH) all
 	@$(ECHO) "$(FANCY_RESET)"
 
-main:
-	$(CC) $(CHEADERS) $(CFLAGS) -L. -lftprintf main.c -o test
-	./test
+test:
+	$(CC) $(CHEADERS) $(CFLAGS) -L. -lftprintf main.c -o $@
+	./$@
+	$(RM) $@
 
 clean:
 	@$(ECHO) "$(B_RED)"

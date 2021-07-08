@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 14:23:05 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/07 14:43:00 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/08 20:30:29 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int	ft_set_ind_s(va_list args)
 
 int	ft_set_ind_p(va_list args)
 {
-	unsigned long int	*v_arg;
+	unsigned long int	v_arg;
 	int					sum;
 
 	sum = 0;
-	v_arg = va_arg(args, unsigned long int *);
+	v_arg = va_arg(args, unsigned long int);
 	sum += ft_int_putstr_fd("0x", 1);
-	return (sum += ft_luint_putnbr_base((*v_arg), "0123456789abcdef", true));
+	return (sum += ft_luint_putnbr_base(v_arg, "0123456789abcdef", true));
 }
 
 int	ft_set_ind_percent(va_list args)
