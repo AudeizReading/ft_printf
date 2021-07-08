@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/07/07 15:30:14 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/08 19:33:51 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ LIBFTA=libft.a
 LIBFT_PATH=./libft/
 CFLAGS=-Wall -Wextra -Werror
 CHEADERS=-I .
-LDFLAGS=-L ./libft/ -lftprintf
+LDFLAGS=-L ./libft/ -lft 
 ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
 	printf\
@@ -42,10 +42,8 @@ OBJ=$(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(SRC)
-	@$(MAKE) $(LIBFT)
+$(NAME): $(LIBFT) $(OBJ)
 	@$(ECHO) "$(B_GRE)"
-	$(CC) $(CHEADERS) $(CFLAGS) -c $^
 	@$(ECHO) "$(B_CYA)"
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
@@ -55,6 +53,9 @@ $(LIBFT):
 	@$(ECHO) "$(B_MAG)"
 	$(MAKE) -C $(LIBFT_PATH) all
 	@$(ECHO) "$(FANCY_RESET)"
+
+%.o: %.c
+	$(CC) $(CHEADERS) $(CFLAGS)  -c $^
 
 clean:
 	@$(ECHO) "$(B_RED)"
