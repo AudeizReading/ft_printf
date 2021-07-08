@@ -6,13 +6,14 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/07/08 19:40:34 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/08 20:07:28 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ECHO=-echo
 CC=-gcc
 RM=-rm -rf
+CP=-cp
 AR=-ar rcs
 MAKE=-make
 B_RED=\033[1;31m
@@ -42,9 +43,11 @@ OBJ=$(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(LIBFT)
 	@$(ECHO) "$(B_GRE)"
+	$(CC) $(CHEADERS) $(CFLAGS) -c $(SRC)
 	@$(ECHO) "$(B_CYA)"
+	$(CP) $(LIBFT_PATH)$(LIBFTA) $@
 	$(AR) $@ $(OBJ)
 	@$(ECHO) "$(FANCY_RESET)"
 	@$(MAKE) clean
@@ -54,8 +57,9 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_PATH) all
 	@$(ECHO) "$(FANCY_RESET)"
 
-%.o: %.c
-	$(CC) $(CHEADERS) $(CFLAGS)  -c $^
+main:
+	$(CC) $(CHEADERS) $(CFLAGS) -L. -lftprintf main.c -o test
+	./test
 
 clean:
 	@$(ECHO) "$(B_RED)"
@@ -64,7 +68,7 @@ clean:
 
 libclean: clean
 	@$(ECHO) "$(B_RED)"
-	$(RM) $(LIBFT)/$(LIBFTA)
+	$(RM) $(LIBFT_PATH)$(LIBFTA)
 	@$(ECHO) "$(FANCY_RESET)"
 
 fclean: libclean
