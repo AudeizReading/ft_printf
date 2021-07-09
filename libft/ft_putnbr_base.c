@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 14:11:15 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 14:23:23 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/09 09:32:11 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_putnbr_base(int nbr, char *base, t_bool restart)
 		sum++;
 	}
 	if (l_nbr >= size_base)
-		ft_putnbr_base(l_nbr / size_base, base, false);
+		ft_putnbr_base(l_nbr / size_base, base, e_false);
 	sum += ft_int_putchar_fd(base[l_nbr % size_base], 1);
 	return (sum);
 }

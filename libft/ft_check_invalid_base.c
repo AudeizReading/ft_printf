@@ -6,7 +6,7 @@
 /*   By: alellouc <alellouc@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 14:10:26 by alellouc          #+#    #+#             */
-/*   Updated: 2021/06/27 14:27:03 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/09 09:30:36 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ t_bool	ft_check_invalid_base(char *base, int *base_2_convert)
 		(*base_2_convert)++;
 	}
 	if (*base_2_convert < 2)
-		return (true);
-	return (false);
+		return (e_true);
+	return (e_false);
 }

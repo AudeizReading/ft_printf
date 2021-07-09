@@ -6,7 +6,7 @@
 /*   By: alellouc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/07 15:27:59 by alellouc          #+#    #+#             */
-/*   Updated: 2021/07/07 15:30:19 by alellouc         ###   ########.fr       */
+/*   Updated: 2021/07/09 09:21:48 by alellouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_bool	ft_is_indicator(int c)
 {
 	if (!ft_strchr("diuxXcsp%", c))
-		return (false);
-	return (true);
+		return (e_false);
+	return (e_true);
 }
 
 int	ft_parse_ind(char c, va_list args)
