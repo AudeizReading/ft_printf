@@ -6,7 +6,7 @@
 #    By: alellouc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/08 18:46:09 by alellouc          #+#    #+#              #
-#    Updated: 2021/07/08 21:21:30 by alellouc         ###   ########.fr        #
+#    Updated: 2021/07/09 23:34:07 by alellouc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ LIBFTA=libft.a
 LIBFT_PATH=./libft/
 CFLAGS=-Wall -Wextra -Werror
 CHEADERS=-I .
-LDFLAGS=-L ./libft/ -lft 
 ALL_FLAGS=$(CFLAGS) $(CHEADERS)
 SRC=$(addprefix ft_, $(addsuffix .c, \
 	printf\
@@ -43,9 +42,10 @@ OBJ=$(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT)
+$(NAME): $(SRC)
+	$(MAKE) $(LIBFT)
 	@$(ECHO) "$(B_GRE)"
-	$(CC) $(CHEADERS) $(CFLAGS) -c $(SRC)
+	$(CC) $(CHEADERS) $(CFLAGS) -c $^
 	@$(ECHO) "$(B_CYA)"
 	$(CP) $(LIBFT_PATH)$(LIBFTA) $@
 	$(AR) $@ $(OBJ)
